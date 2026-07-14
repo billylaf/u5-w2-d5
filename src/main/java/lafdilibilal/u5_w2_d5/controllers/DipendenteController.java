@@ -2,12 +2,9 @@ package lafdilibilal.u5_w2_d5.controllers;
 
 import lafdilibilal.u5_w2_d5.DTO.DipendenteDTO;
 import lafdilibilal.u5_w2_d5.entities.Dipendente;
-import lafdilibilal.u5_w2_d5.exceptions.ValidationException;
 import lafdilibilal.u5_w2_d5.services.DipendenteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +26,7 @@ public class DipendenteController {
         return this.dipendenteService.findAll();
     }
 
-    @PostMapping
+  /*  @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Dipendente create(@RequestBody @Validated DipendenteDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
@@ -39,7 +36,7 @@ public class DipendenteController {
             throw new ValidationException(errorsList);
         }
         return this.dipendenteService.save(body);
-    }
+    }*/
 
     @GetMapping("/{username}")
     public Dipendente findById(@PathVariable String username) {

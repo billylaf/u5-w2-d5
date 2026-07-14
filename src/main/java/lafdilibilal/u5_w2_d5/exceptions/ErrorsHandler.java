@@ -36,4 +36,10 @@ public class ErrorsHandler {
         ex.printStackTrace();
         return new ErrorsPayload("C'è stato un errore lato backend, ci scusiamo per il disagio", LocalDateTime.now());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorsPayload handleUnauthorized(UnauthorizedException ex) {
+        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    }
 }

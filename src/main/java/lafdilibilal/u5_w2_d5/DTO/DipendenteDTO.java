@@ -29,5 +29,9 @@ public class DipendenteDTO {
     @Email(message = "Email deve essere in un formato valido")
     private String email;
 
+    @NotBlank(message = "La password è obbligatoria")
+    @Size(min = 8, message = "La password deve avere almeno 8 caratteri")
+    private String password;
+
     private MultipartFile avatar;
 }

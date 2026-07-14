@@ -8,6 +8,7 @@ import lafdilibilal.u5_w2_d5.exceptions.BadRequestException;
 import lafdilibilal.u5_w2_d5.exceptions.NotFoundException;
 import lafdilibilal.u5_w2_d5.repositories.DipendenteRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,10 +22,12 @@ public class DipendenteService {
 
     private final DipendenteRepository dipendenteRepository;
     private final Cloudinary cloudinary;
+    private final PasswordEncoder bcrypt;
 
-    public DipendenteService(DipendenteRepository dipendenteRepository, Cloudinary cloudinary) {
+    public DipendenteService(DipendenteRepository dipendenteRepository, Cloudinary cloudinary, PasswordEncoder bcrypt) {
         this.dipendenteRepository = dipendenteRepository;
         this.cloudinary = cloudinary;
+        this.bcrypt = bcrypt;
     }
 
     public List<Dipendente> findAll() {
@@ -44,7 +47,8 @@ public class DipendenteService {
                 body.getUsername(),
                 body.getNome(),
                 body.getCognome(),
-                body.getEmail()
+                body.getEmail(),
+                this.bcrypt.encode(body.getPassword())
         );
 
         Dipendente saved = this.dipendenteRepository.save(newDipendente);
@@ -92,5 +96,11 @@ public class DipendenteService {
         } catch (IOException e) {
             throw new BadRequestException("errore durante upload del img");
         }
+    }
+
+
+    public Dipendente findByEmail(String email) {
+        return this.dipendenteRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("il dipendente con email " + email + " non e stato trovato"));
     }
 }
